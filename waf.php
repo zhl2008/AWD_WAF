@@ -238,8 +238,8 @@ function proxy($host,$port,$malicious){
 
     // record the server response according to the config
     $tmp = substr($res,0,100);
-    if str_len($tmp==100){
-        $tmp = $tmp.'...'
+    if(strlen($tmp)==100){
+        $tmp = $tmp.'...';
     }
     if($malicious){
         file_put_contents(LOG_FILENAME, "\n".str_replace("\r", "", $tmp)."\n", FILE_APPEND);
