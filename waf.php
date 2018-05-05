@@ -237,11 +237,15 @@ function proxy($host,$port,$malicious){
     $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
 
     // record the server response according to the config
+    $tmp = substr($res,0,100);
+    if str_len($tmp==100){
+        $tmp = $tmp.'...'
+    }
     if($malicious){
-        file_put_contents(LOG_FILENAME, "\n".str_replace("\r", "", $res)."\n", FILE_APPEND);
+        file_put_contents(LOG_FILENAME, "\n".str_replace("\r", "", $tmp)."\n", FILE_APPEND);
     }
     if(ALL_RECORD){
-        file_put_contents(LOG_ALL_FILENAME, "\n".str_replace("\r", "", $res)."\n", FILE_APPEND);
+        file_put_contents(LOG_ALL_FILENAME, "\n".str_replace("\r", "", $tmp)."\n", FILE_APPEND);
     }
 
     $response_headers = substr($res, 0, $headerSize);
