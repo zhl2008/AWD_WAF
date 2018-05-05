@@ -34,7 +34,7 @@ define('DEBUG',false);
 define('REWRITE_UPLOAD',true);
 define('MALICIOUS_DIE',false);
 define('MALICIOUS_UNSET',true);
-define('PROXY_HOST','47.75.2.217');
+define('PROXY_HOST','172.17.0.2');
 define('PROXY_PORT',80);
 $white_ip_list = array();
 $black_ip_list = array('172.17.0.1');
@@ -212,15 +212,23 @@ function proxy($host,$port,$malicious){
 
     //send request
     //change the header of host to the value of the real server
-    $headers['HOST'] = $host .':'. $port;
+    $headers['Host'] = $host .':'. $port;
+    // if there is extra output, the accept-encoding should not be gzip
+    $headers['Accept-Encoding'] = 'haozigege';
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($curl,CURLOPT_POSTFIELDS,$body);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+    $new_headers = array();
+    foreach ($headers as $key => $value) {
+        array_push($new_headers, $key.': '.$value);
+    }
+
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $new_headers);
     curl_setopt($curl, CURLOPT_HEADER,1);
     if($method=='GET'){
         ;
     }else if($method=='POST'){
+        curl_setopt($curl,CURLOPT_POSTFIELDS,$body);
         curl_setopt($curl,CURLOPT_POST,1);
     }else{
         exit('unknown method: '.$method);
