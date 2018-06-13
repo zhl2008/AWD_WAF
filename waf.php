@@ -16,11 +16,12 @@ $remote_ip = $_SERVER['REMOTE_ADDR'];
 /* 
     mode 1: record malicious payload, but do nothing;
     mode 2: record malicious payload, and handle with the malicious payloads;
-    mode 3: record malicious payload, and using IP waf;
+    mode 3: record malicious payload, and using IP waf to handle malicious payloads;
     mode 4: record malicious payload, and using proxy
+    mode 5: using IP waf to stop everything
 */
 
-define('WAF_MODE',4);
+define('WAF_MODE',1);
 
 define('WAF_PATH','/var/www/html/my_waf/');
 define('LOG_PATH','/var/www/html/my_waf/log/');
@@ -87,8 +88,8 @@ function waf(){
     unset($header['Accept']);//fix a bug
     $input = array("Get"=>$get, "Post"=>$post, "Cookie"=>$cookie, "File"=>$files, "Header"=>$header);
     // the filter rules
-    $pattern = "select|insert|update|delete|union|into|load_file|outfile|dumpfile|sub|hex";
-    $pattern .= "admin|file_put_contents|fwrite|curl|system|eval|assert";
+    $pattern = "select|insert|update|delete|union|load_file|outfile|dumpfile|sub|hex";
+    $pattern .= "|file_put_contents|fwrite|curl|system|eval|assert";
     $pattern .="|passthru|exec|system|chroot|scandir|chgrp|chown|shell_exec|proc_open|proc_get_status|popen|ini_alter|ini_restore";
     $pattern .="|`|openlog|syslog|readlink|symlink|popepassthru|stream_socket_server|assert|pcntl_exec";
     $vpattern = explode("|",$pattern);
@@ -288,7 +289,9 @@ switch (WAF_MODE) {
         $m = waf();
         proxy(PROXY_HOST,PROXY_PORT,$m);
         break;
-    
+    case 5:
+	waf();
+	ip_waf();
     default:
         exit('no such mode!');
         break;
