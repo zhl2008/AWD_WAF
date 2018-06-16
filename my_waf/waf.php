@@ -1,4 +1,4 @@
-<?php
+<?p
 /*
 
     @author Hence/Lancet
@@ -89,7 +89,7 @@ function waf(){
     $input = array("Get"=>$get, "Post"=>$post, "Cookie"=>$cookie, "File"=>$files, "Header"=>$header);
     // the filter rules
     $pattern = "select|insert|update|delete|union|load_file|outfile|dumpfile|sub|hex";
-    $pattern .= "|file_put_contents|fwrite|curl|system|eval|assert";
+    $pattern .= "|file_put_contents|fwrite|curl|system|eval|assert|flag";
     $pattern .="|passthru|exec|system|chroot|scandir|chgrp|chown|shell_exec|proc_open|proc_get_status|popen|ini_alter|ini_restore";
     $pattern .="|`|openlog|syslog|readlink|symlink|popepassthru|stream_socket_server|assert|pcntl_exec";
     $vpattern = explode("|",$pattern);
