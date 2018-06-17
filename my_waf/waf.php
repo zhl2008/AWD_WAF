@@ -1,6 +1,5 @@
-<?p
+<?php
 /*
-
     @author Hence/Lancet
     @time 2018.5
     @name AWD_WAF
