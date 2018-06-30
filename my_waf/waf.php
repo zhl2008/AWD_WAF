@@ -291,6 +291,7 @@ switch (WAF_MODE) {
     case 5:
 	waf();
 	ip_waf();
+	break;
     default:
         exit('no such mode!');
         break;
