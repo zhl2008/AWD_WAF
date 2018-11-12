@@ -31,7 +31,7 @@ for f in filepaths:
 			continue
 		if line.replace("\n","").replace(" ","").replace("\r","")=="":
 			continue
-		if not line.startswith('use') and not line.startswith('namespace') and not line.startswith('/') and not line.startswith(' *') and php_flag and not is_insert:
+		if not line.startswith('use') and not line.startswith('namespace') and not line.startswith('/') and not line.startswith(' *') and php_flag and not line.startswith('*') and not line.startswith(' /') and not line.startswith('@') and not is_insert:
 			res += insert_line
 			is_insert = True
 		res += line
