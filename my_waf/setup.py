@@ -35,7 +35,10 @@ for f in filepaths:
 			res += insert_line
 			is_insert = True
 		res += line
-	open(f,'w').write(res)
+	try:
+		open(f,'w').write(res)
+	except Exception,e:
+		print e
 	if not is_insert:
 		print "warning: %s not modified" %f
 	
